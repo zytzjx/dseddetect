@@ -29,6 +29,7 @@ func CreateRedisPool(count int) (map[int]*redis.Client, error) {
 		})
 
 		clients[i] = c
+		c.Set(ctx, "status", "disconnected", 0)
 	}
 	return clients, nil
 }
@@ -162,4 +163,14 @@ func Del(label int, key ...string) error {
 		return errors.New("not found label")
 	}
 	return client.Del(ctx, key...).Err()
+}
+
+// ResetDB  init  DB for next Disk
+func ResetDB(label int) error {
+	client, ok := clients[label]
+	if !ok {
+		return errors.New("not found label")
+	}
+	client.FlushDB(ctx)
+	return client.Set(ctx, "status", "connected", 0).Err()
 }

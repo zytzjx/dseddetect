@@ -154,6 +154,9 @@ func (sm *SyncMap) RemoveOld(newkeylist []string) {
 	defer sm.lock.Unlock()
 	for kk := range sm.dddetect {
 		if !stringInSlice(kk, newkeylist) {
+			//sm.dddetect[kk].detectHDD.Label
+			//TODO: need remove data from database
+			Set(sm.dddetect[kk].detectHDD.Label, "status", "disconnected", 0)
 			delete(sm.dddetect, kk)
 		}
 	}
@@ -260,7 +263,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 	// 	//public String firware version replace by sVersion;
 	// 	Otherinfo map[string]string `json:"otherinfo"`
 	// }
-
+	ResetDB(detectHDD.Label)
 	Set(detectHDD.Label, "status", "connected", 0)
 	Set(detectHDD.Label, "size", detectHDD.Size, 0)
 	Set(detectHDD.Label, "make", detectHDD.Manufacture, 0)
@@ -278,7 +281,10 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 
 	badsectors, _ := detectHDD.Otherinfo["badsectors"]
 	SetTransaction(detectHDD.Label, "badsectors", badsectors)
-
+	jsonString, err := json.Marshal(detectHDD.Otherinfo)
+	if err == nil {
+		SetTransaction(detectHDD.Label, "otherinfo", jsonString)
+	}
 	healthy, ok := detectHDD.Otherinfo["HD-health"]
 	if !ok {
 		healthy = "Failed.FD"

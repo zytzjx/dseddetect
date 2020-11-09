@@ -26,11 +26,14 @@
    if disconnect == status then remove the table field except status field
   |key|default|detail|
   |:---|-----:|:---------|
-  |status|connected/disconnected|port device status|
+  |status|connected/disconnected/running|port device status|
   |size||hd size|
   |make||manufacture|
   |model||model|
   |serialnumber|||
+  |linuxname||linux device name, /dev/sda|
+  |sglibName||sg device name, /dev/sg2|
+  |trasaction||it is HSET, all field will upload to cmc server|
  
   Runing:    
    if disconnect == status then remove all fields
