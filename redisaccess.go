@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -42,6 +43,19 @@ func SetLabelCount(labelcnt int) error {
 // GetLabelCount get label count
 func GetLabelCount() (int, error) {
 	return rdb.Get(ctx, "labelcnt").Int()
+}
+
+// Publish publis to anywhere
+func Publish(label int, key string, value interface{}) (int64, error) {
+	client, ok := clients[label]
+	if !ok {
+		return 0, errors.New("not found label")
+	}
+	ky := make(map[string]interface{})
+	ky["label"] = label
+	ky["msg"] = value
+	sj, _ := json.Marshal(ky)
+	return client.Publish(ctx, key, sj).Result()
 }
 
 func ping(label int) error {
@@ -172,5 +186,5 @@ func ResetDB(label int) error {
 		return errors.New("not found label")
 	}
 	client.FlushDB(ctx)
-	return client.Set(ctx, "status", "connected", 0).Err()
+	return client.Set(ctx, "status", "disconnected", 0).Err()
 }

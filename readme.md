@@ -33,7 +33,11 @@
   |serialnumber|||
   |linuxname||linux device name, /dev/sda|
   |sglibName||sg device name, /dev/sg2|
-  |trasaction||it is HSET, all field will upload to cmc server|
+  |badsectors|||
+  |HD-health||PASSED,OK is GOOD, other unhealthy|
+  |trasaction||it is HSET, all field will upload to cmc server|  
+  ||||
+
  
   Runing:    
    if disconnect == status then remove all fields

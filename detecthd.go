@@ -157,6 +157,7 @@ func (sm *SyncMap) RemoveOld(newkeylist []string) {
 			//sm.dddetect[kk].detectHDD.Label
 			//TODO: need remove data from database
 			Set(sm.dddetect[kk].detectHDD.Label, "status", "disconnected", 0)
+			Publish(sm.dddetect[kk].detectHDD.Label, "status", "disconnected")
 			delete(sm.dddetect, kk)
 		}
 	}
@@ -265,6 +266,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 	// }
 	ResetDB(detectHDD.Label)
 	Set(detectHDD.Label, "status", "connected", 0)
+	Publish(detectHDD.Label, "status", "connected")
 	Set(detectHDD.Label, "size", detectHDD.Size, 0)
 	Set(detectHDD.Label, "make", detectHDD.Manufacture, 0)
 	Set(detectHDD.Label, "model", detectHDD.Model, 0)
@@ -281,6 +283,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 
 	badsectors, _ := detectHDD.Otherinfo["badsectors"]
 	SetTransaction(detectHDD.Label, "badsectors", badsectors)
+	Set(detectHDD.Label, "badsectors", badsectors, 0)
 	jsonString, err := json.Marshal(detectHDD.Otherinfo)
 	if err == nil {
 		SetTransaction(detectHDD.Label, "otherinfo", jsonString)
@@ -289,6 +292,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 	if !ok {
 		healthy = "Failed.FD"
 	}
+	Set(detectHDD.Label, "HD-health", healthy, 0)
 	SetTransaction(detectHDD.Label, "Healthy", healthy)
 
 }
@@ -349,7 +353,7 @@ func MergeCalibration() {
 }
 
 func main() {
-	fmt.Println("version: 20.11.05.0, auther:Jeffery Zhang")
+	fmt.Println("version: 20.11.15.0, auther:Jeffery Zhang")
 	fmt.Println("http://localhost:12000/print")
 	fmt.Println("http://localhost:12000/print/{[0-9]+}")
 	nDelay := flag.Int("interval", 10, "interval run check disk.")
