@@ -221,6 +221,20 @@ func (sm *SyncMap) ItemToString(id string) string {
 	return string(jsonString)
 }
 
+// IndexString get label connect
+func (sm *SyncMap) IndexString() string {
+	sm.lock.Lock()
+	defer sm.lock.Unlock()
+	labels := make([]int, 0)
+	for _, v := range sm.dddetect {
+		if v.detectHDD.Label > 0 {
+			labels = append(labels, v.detectHDD.Label)
+		}
+	}
+	jsonString, _ := json.Marshal(labels)
+	return string(jsonString)
+}
+
 func (sm *SyncMap) String() string {
 	sm.lock.Lock()
 	defer sm.lock.Unlock()
@@ -264,6 +278,9 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 	// 	//public String firware version replace by sVersion;
 	// 	Otherinfo map[string]string `json:"otherinfo"`
 	// }
+	if detectHDD.Label == 0 {
+		return
+	}
 	ResetDB(detectHDD.Label)
 	Set(detectHDD.Label, "status", "connected", 0)
 	Publish(detectHDD.Label, "status", "connected")
@@ -332,11 +349,13 @@ func MergeCalibration() {
 						v.detectHDD.Calibration = fmt.Sprintf("%d_%s", index, slot)
 					}
 					if len(v.detectHDD.Calibration) > 0 {
-						v.detectHDD.UILabel, _ = configxmldata.Conf.GetPortMap()[v.detectHDD.Calibration]
-						reg, _ := regexp.Compile("label(\\d+)")
-						ss := reg.FindStringSubmatch(v.detectHDD.UILabel)
-						if len(ss) == 2 {
-							v.detectHDD.Label, _ = strconv.Atoi(ss[1])
+						v.detectHDD.UILabel, ok = configxmldata.Conf.GetPortMap()[v.detectHDD.Calibration]
+						if ok {
+							reg, _ := regexp.Compile("label(\\d+)")
+							ss := reg.FindStringSubmatch(v.detectHDD.UILabel)
+							if len(ss) == 2 {
+								v.detectHDD.Label, _ = strconv.Atoi(ss[1])
+							}
 						}
 					}
 
@@ -355,6 +374,7 @@ func MergeCalibration() {
 func main() {
 	fmt.Println("version: 20.11.15.0, auther:Jeffery Zhang")
 	fmt.Println("http://localhost:12000/print")
+	fmt.Println("http://localhost:12000/labels")
 	fmt.Println("http://localhost:12000/print/{[0-9]+}")
 	nDelay := flag.Int("interval", 10, "interval run check disk.")
 	flag.Parse()
@@ -376,6 +396,7 @@ func main() {
 	r := mux.NewRouter()
 	// Add your routes as needed
 	r.HandleFunc("/print", PrintHandler).Methods("GET")
+	r.HandleFunc("/labels", LabelsHandler).Methods("GET")
 	r.HandleFunc("/print/{id:[0-9]+}", LabelHandler).Methods("GET")
 
 	srv := &http.Server{
