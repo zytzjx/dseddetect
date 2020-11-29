@@ -65,53 +65,62 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 	})
 
 	scanner := bufio.NewScanner(stdout)
-	for scanner.Scan() {
-		ss := scanner.Text()
-		fmt.Println(ss)
-		keyvalue := strings.Split(ss, ":")
-		if len(keyvalue) == 2 {
-			keyvalue[0] = strings.Trim(keyvalue[0], " ")
-			keyvalue[1] = strings.Trim(keyvalue[1], " ")
-			if _, ok := ingoreKeys[keyvalue[0]]; ok {
-				continue
-			}
-			if strings.EqualFold("Vendor", keyvalue[0]) || strings.EqualFold("Model Family", keyvalue[0]) {
-				hdinfo.Manufacture = keyvalue[1]
-			} else if strings.EqualFold("Device Model", keyvalue[0]) || strings.EqualFold("Product", keyvalue[0]) {
-				hdinfo.Model = keyvalue[1]
-			} else if strings.EqualFold("Serial Number", keyvalue[0]) {
-				hdinfo.Serialno = keyvalue[1]
-			} else if strings.EqualFold("LU WWN Device Id", keyvalue[0]) {
-				hdinfo.LuwwndevID = strings.Replace(keyvalue[1], " ", "", -1)
-			} else if strings.EqualFold("Firmware Version", keyvalue[0]) || strings.EqualFold("Revision", keyvalue[0]) {
-				hdinfo.Version = keyvalue[1]
-			} else if strings.EqualFold("Logical Unit id", keyvalue[0]) {
-				v := strings.Replace(keyvalue[1], "-", "", -1)
-				v = strings.Replace(v, "0x", "", -1)
-				hdinfo.Otherinfo["LogicalUnitID"] = v
-				hdinfo.LuwwndevID = v
-			} else if strings.EqualFold(hdinfo.Size, "-") && strings.EqualFold("User Capacity", keyvalue[0]) {
-				match := regexp.MustCompile(`^.*?\[(.*?)\]$`)
-				size := match.FindStringSubmatch(keyvalue[1])
-				if len(size) > 1 {
-					hdinfo.Size = strings.Replace(size[1], " ", "", -1)
+	done := make(chan bool)
+	go func() {
+		for scanner.Scan() {
+			ss := scanner.Text()
+			fmt.Println(ss)
+			keyvalue := strings.Split(ss, ":")
+			if len(keyvalue) == 2 {
+				keyvalue[0] = strings.Trim(keyvalue[0], " ")
+				keyvalue[1] = strings.Trim(keyvalue[1], " ")
+				if _, ok := ingoreKeys[keyvalue[0]]; ok {
+					continue
 				}
-			} else {
-				if strings.EqualFold(keyvalue[0], "SMART Status command failed") {
-					hdinfo.Otherinfo["HD-health"] = keyvalue[1]
-				} else if strings.EqualFold(keyvalue[0], "SMART overall-health self-assessment test result") ||
-					strings.EqualFold(keyvalue[0], "SMART Health Status") ||
-					strings.EqualFold(keyvalue[0], "Read SMART Data failed") {
-					k := "HD-health"
-					if _, ok := hdinfo.Otherinfo[k]; !ok {
-						hdinfo.Otherinfo[k] = keyvalue[1]
+				if strings.EqualFold("Vendor", keyvalue[0]) || strings.EqualFold("Model Family", keyvalue[0]) {
+					hdinfo.Manufacture = keyvalue[1]
+				} else if strings.EqualFold("Device Model", keyvalue[0]) || strings.EqualFold("Product", keyvalue[0]) {
+					hdinfo.Model = keyvalue[1]
+				} else if strings.EqualFold("Serial Number", keyvalue[0]) {
+					hdinfo.Serialno = keyvalue[1]
+				} else if strings.EqualFold("LU WWN Device Id", keyvalue[0]) {
+					hdinfo.LuwwndevID = strings.Replace(keyvalue[1], " ", "", -1)
+				} else if strings.EqualFold("Firmware Version", keyvalue[0]) || strings.EqualFold("Revision", keyvalue[0]) {
+					hdinfo.Version = keyvalue[1]
+				} else if strings.EqualFold("Logical Unit id", keyvalue[0]) {
+					v := strings.Replace(keyvalue[1], "-", "", -1)
+					v = strings.Replace(v, "0x", "", -1)
+					hdinfo.Otherinfo["LogicalUnitID"] = v
+					hdinfo.LuwwndevID = v
+				} else if strings.EqualFold(hdinfo.Size, "-") && strings.EqualFold("User Capacity", keyvalue[0]) {
+					match := regexp.MustCompile(`^.*?\[(.*?)\]$`)
+					size := match.FindStringSubmatch(keyvalue[1])
+					if len(size) > 1 {
+						hdinfo.Size = strings.Replace(size[1], " ", "", -1)
 					}
 				} else {
-					hdinfo.Otherinfo[keyvalue[0]] = keyvalue[1]
+					if strings.EqualFold(keyvalue[0], "SMART Status command failed") {
+						hdinfo.Otherinfo["HD-health"] = keyvalue[1]
+					} else if strings.EqualFold(keyvalue[0], "SMART overall-health self-assessment test result") ||
+						strings.EqualFold(keyvalue[0], "SMART Health Status") ||
+						strings.EqualFold(keyvalue[0], "Read SMART Data failed") {
+						k := "HD-health"
+						if _, ok := hdinfo.Otherinfo[k]; !ok {
+							hdinfo.Otherinfo[k] = keyvalue[1]
+						}
+					} else {
+						hdinfo.Otherinfo[keyvalue[0]] = keyvalue[1]
+					}
 				}
 			}
 		}
+		done <- true
+	}()
+	<-done
+	if cmd.Wait() != nil {
+		fmt.Println("run smartctrl failed")
 	}
+
 	timer.Stop()
 	if v, ok := hdinfo.Otherinfo["HD-health"]; ok {
 		if strings.EqualFold(v, "OK") || strings.EqualFold(v, "PASSED") {
@@ -135,38 +144,45 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 
 		scanner := bufio.NewScanner(stdout)
 		var badsectors int
-		for scanner.Scan() {
-			ss := scanner.Text()
-			keyvalue := strings.Split(ss, ":")
-			if len(keyvalue) == 2 {
-				keyvalue[0] = strings.Trim(keyvalue[0], " ")
-				keyvalue[1] = strings.Trim(keyvalue[1], " ")
-				if _, ok := ingoreKeys[keyvalue[0]]; ok {
-					continue
-				}
-				if strings.EqualFold("Elements in grown defect list", keyvalue[0]) {
-					hdinfo.Otherinfo["badsectors"] = keyvalue[1]
-				} else if strings.EqualFold("Non-medium error count", keyvalue[0]) {
-					hdinfo.Otherinfo["Nonmediumerrorcnt"] = keyvalue[1]
-				}
-			} else {
-				r := regexp.MustCompile(`^\s*(\d+)\s+(\S+)\s+(0x[0-9a-fA-F]{4})\s+(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*`)
-				fields := r.FindStringSubmatch(ss)
-				if len(fields) == 11 {
-					AttributeName := fields[2]
-					RawValue := fields[10]
-					hdinfo.Otherinfo[AttributeName] = RawValue
+		go func() {
+			for scanner.Scan() {
+				ss := scanner.Text()
+				keyvalue := strings.Split(ss, ":")
+				if len(keyvalue) == 2 {
+					keyvalue[0] = strings.Trim(keyvalue[0], " ")
+					keyvalue[1] = strings.Trim(keyvalue[1], " ")
+					if _, ok := ingoreKeys[keyvalue[0]]; ok {
+						continue
+					}
+					if strings.EqualFold("Elements in grown defect list", keyvalue[0]) {
+						hdinfo.Otherinfo["badsectors"] = keyvalue[1]
+					} else if strings.EqualFold("Non-medium error count", keyvalue[0]) {
+						hdinfo.Otherinfo["Nonmediumerrorcnt"] = keyvalue[1]
+					}
+				} else {
+					r := regexp.MustCompile(`^\s*(\d+)\s+(\S+)\s+(0x[0-9a-fA-F]{4})\s+(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*`)
+					fields := r.FindStringSubmatch(ss)
+					if len(fields) == 11 {
+						AttributeName := fields[2]
+						RawValue := fields[10]
+						hdinfo.Otherinfo[AttributeName] = RawValue
 
-					if strings.EqualFold("Reallocated_Sector_Ct", AttributeName) ||
-						strings.EqualFold("Current_Pending_Sector", AttributeName) {
-						aa, err := strconv.Atoi(strings.Trim(RawValue, " "))
-						if err == nil {
-							badsectors += aa
+						if strings.EqualFold("Reallocated_Sector_Ct", AttributeName) ||
+							strings.EqualFold("Current_Pending_Sector", AttributeName) {
+							aa, err := strconv.Atoi(strings.Trim(RawValue, " "))
+							if err == nil {
+								badsectors += aa
+							}
+							hdinfo.Otherinfo["badsectors"] = strconv.Itoa(badsectors)
 						}
-						hdinfo.Otherinfo["badsectors"] = strconv.Itoa(badsectors)
 					}
 				}
 			}
+			done <- true
+		}()
+		<-done
+		if cmd.Wait() != nil {
+			fmt.Println("run smartctrl failed")
 		}
 
 		timer.Stop()
@@ -191,19 +207,9 @@ func waitTimeout(wg *sync.WaitGroup, timeout time.Duration) bool {
 
 // RunListDisk run list disks
 func RunListDisk() {
-
-	// dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// 	return
-	// }
-
-	// lsscsipath := path.Join(dir, "lsscsi")
-	// if _, err := os.Stat(lsscsipath); os.IsNotExist(err) {
-	// 	lsscsipath = "lsscsi"
-	// }
 	lsscsipath := "lsscsi"
 	cmd := exec.Command(lsscsipath, "-s", "-g")
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(err)
@@ -220,45 +226,56 @@ func RunListDisk() {
 	var hddinfo []string
 	var hddchanged bool
 	var wg sync.WaitGroup
-	for scanner.Scan() {
-		ss := scanner.Text()
-		fmt.Println(ss)
-		hddinfo = append(hddinfo, ss)
-		if !DetectData.MatchKey(ss) {
-			hddchanged = true
-		}
-		if !DetectData.ContainsKey(ss) {
-			//\s Matches any white-space character.
-			r := regexp.MustCompile(`^([\s\S]{13})(disk[\s\S]{4})([\s\S]{9})([\s\S]{17})([\s\S]{6})([\s\S]{11})([\s\S]{11})([\s\S]+)$`)
-			diskinfos := r.FindStringSubmatch(ss)
-			if len(diskinfos) == 9 {
-				var dddect = NewSyncDataDetect()
-				dddect.detectHDD.Locpath = strings.Trim(diskinfos[1], " ")
-				dddect.detectHDD.Type = strings.Trim(diskinfos[2], " ")
-				dddect.detectHDD.Manufacture = strings.Trim(diskinfos[3], " ")
-				dddect.detectHDD.Model = strings.Trim(diskinfos[4], " ")
-				dddect.detectHDD.Version = strings.Trim(diskinfos[5], " ")
-				dddect.detectHDD.LinuxName = strings.Trim(diskinfos[6], " ")
-				dddect.detectHDD.SGLibName = strings.Trim(diskinfos[7], " ")
-				dddect.detectHDD.Size = strings.Trim(diskinfos[8], " ")
+	done := make(chan bool)
+	go func() {
+		for scanner.Scan() {
+			ss := scanner.Text()
+			fmt.Println(ss)
+			hddinfo = append(hddinfo, ss)
+			if !DetectData.MatchKey(ss) {
+				hddchanged = true
+			}
+			if !DetectData.ContainsKey(ss) {
+				//\s Matches any white-space character.
+				r := regexp.MustCompile(`^([\s\S]{13})(disk[\s\S]{4})([\s\S]{9})([\s\S]{17})([\s\S]{6})([\s\S]{11})([\s\S]{11})([\s\S]+)$`)
+				diskinfos := r.FindStringSubmatch(ss)
+				if len(diskinfos) == 9 {
+					var dddect = NewSyncDataDetect()
+					dddect.detectHDD.Locpath = strings.Trim(diskinfos[1], " ")
+					dddect.detectHDD.Type = strings.Trim(diskinfos[2], " ")
+					dddect.detectHDD.Manufacture = strings.Trim(diskinfos[3], " ")
+					dddect.detectHDD.Model = strings.Trim(diskinfos[4], " ")
+					dddect.detectHDD.Version = strings.Trim(diskinfos[5], " ")
+					dddect.detectHDD.LinuxName = strings.Trim(diskinfos[6], " ")
+					dddect.detectHDD.SGLibName = strings.Trim(diskinfos[7], " ")
+					dddect.detectHDD.Size = strings.Trim(diskinfos[8], " ")
 
-				if strings.Index(dddect.detectHDD.LinuxName, `/dev/`) == -1 {
-					continue
-				}
-				//hddchanged = true
-				DetectData.AddValue(ss, dddect)
-				wg.Add(1)
-				go dddect.ReadDataFromSmartCtl(&wg)
-			}
-		} else {
-			if vv, ok := DetectData.Get(ss); ok {
-				if len(vv.detectHDD.UILabel) == 0 && len(vv.detectHDD.Otherinfo) == 0 {
+					if strings.Index(dddect.detectHDD.LinuxName, `/dev/`) == -1 {
+						continue
+					}
+					//hddchanged = true
+					DetectData.AddValue(ss, dddect)
 					wg.Add(1)
-					go vv.ReadDataFromSmartCtl(&wg)
+					go dddect.ReadDataFromSmartCtl(&wg)
+				}
+			} else {
+				if vv, ok := DetectData.Get(ss); ok {
+					if len(vv.detectHDD.UILabel) == 0 && len(vv.detectHDD.Otherinfo) == 0 {
+						wg.Add(1)
+						go vv.ReadDataFromSmartCtl(&wg)
+					}
 				}
 			}
 		}
+		done <- true
+	}()
+
+	<-done
+	err = cmd.Wait()
+	if err != nil {
+		fmt.Println("run lsscsi error: " + err.Error())
 	}
+
 	timer.Stop()
 	DetectData.RemoveOld(hddinfo)
 
@@ -374,16 +391,6 @@ func (sshm *SyncSASHDDMap) ClearReadFlag() {
 // RunCardInfo   get card info
 func (sshm *SyncSASHDDMap) RunCardInfo(index int, wg *sync.WaitGroup) {
 	defer wg.Done()
-	// dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// 	return
-	// }
-
-	// lsscsipath := path.Join(dir, "sas3ircu")
-	// if _, err := os.Stat(lsscsipath); os.IsNotExist(err) {
-	// 	lsscsipath = "sas2ircu"
-	// }
 
 	cmd := exec.Command("./sas2ircu", strconv.Itoa(index), "DISPLAY")
 	stdout, err := cmd.StdoutPipe()
@@ -400,10 +407,18 @@ func (sshm *SyncSASHDDMap) RunCardInfo(index int, wg *sync.WaitGroup) {
 
 	scanner := bufio.NewScanner(stdout)
 	var dynaArr []string
-	for scanner.Scan() {
-		ss := scanner.Text()
-		fmt.Println(ss)
-		dynaArr = append(dynaArr, ss)
+	done := make(chan bool)
+	go func() {
+		for scanner.Scan() {
+			ss := scanner.Text()
+			fmt.Println(ss)
+			dynaArr = append(dynaArr, ss)
+		}
+		done <- true
+	}()
+	<-done
+	if cmd.Wait() != nil {
+		fmt.Println("run sas2ircu failed")
 	}
 	timer.Stop()
 
