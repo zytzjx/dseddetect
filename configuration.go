@@ -1,16 +1,20 @@
 package main
 
 import (
+	"bufio"
 	"encoding/xml"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type item struct {
@@ -93,5 +97,48 @@ func LoadConfigXML() {
 	}
 	fmt.Println(configxmldata)
 	calibrationports = len(configxmldata.Conf.PortMap)
+	RunCardList()
 	SetLabelCount(calibrationports)
+}
+
+// RunCardList   get card count
+func RunCardList() {
+	cmd := exec.Command("./sas2ircu", "LIST")
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := cmd.Start(); err != nil {
+		log.Fatal(err)
+	}
+
+	timer := time.AfterFunc(600*time.Second, func() {
+		cmd.Process.Kill()
+	})
+
+	cnt := 0
+	scanner := bufio.NewScanner(stdout)
+	var re = regexp.MustCompile(`(?m)(\d)\s+\S+\s+[0-9a-f]{4}h\s+[0-9a-f]{2}h\s+\S+\s+[0-9a-f]{4}h\s+[0-9a-f]{4}h`)
+	done := make(chan bool)
+	go func() {
+		for scanner.Scan() {
+			ss := scanner.Text()
+			fmt.Println(ss)
+			if len(re.FindAllString(ss, -1)) > 0 {
+				cnt++
+			}
+		}
+		done <- true
+	}()
+	<-done
+	if cnt > 0 {
+		if calibrationports > cnt*16 {
+			calibrationports = cnt * 16
+		}
+	}
+	if cmd.Wait() != nil {
+		fmt.Println("run sas2ircu failed")
+	}
+	timer.Stop()
+
 }

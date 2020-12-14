@@ -372,7 +372,7 @@ func MergeCalibration() {
 }
 
 func main() {
-	fmt.Println("version: 20.11.15.0, auther:Jeffery Zhang")
+	fmt.Println("version: 20.12.14.0, auther:Jeffery Zhang")
 	fmt.Println("http://localhost:12000/print")
 	fmt.Println("http://localhost:12000/labels")
 	fmt.Println("http://localhost:12000/print/{[0-9]+}")
