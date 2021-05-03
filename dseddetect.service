@@ -5,15 +5,16 @@
 #sudo systemctl start psirun.service
 
 [Unit]
-Description=Futuredial DSES Detect Service
-After=graphical.target
+Description=Futuredial DSED Detect Service
+#After=graphical.target
 
 [Service]
-Type=simple
+Type=idle
 #User=qa
+Environment="DSEDHOME=/opt/futuredial/dsed"
 Restart=always
+ExecStart=/opt/futuredial/dsed/dseddetect
 WorkingDirectory=/opt/futuredial/dsed
-ExecStart=sudo /opt/futuredial/dsed/dseddetect
 
 [Install]
 WantedBy=multi-user.target
