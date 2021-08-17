@@ -250,7 +250,7 @@ func RunListDisk() {
 					dddect.detectHDD.SGLibName = strings.Trim(diskinfos[7], " ")
 					dddect.detectHDD.Size = strings.Trim(diskinfos[8], " ")
 
-					if strings.Index(dddect.detectHDD.LinuxName, `/dev/`) == -1 {
+					if !strings.Contains(dddect.detectHDD.LinuxName, `/dev/`) {
 						continue
 					}
 					//hddchanged = true

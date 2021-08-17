@@ -114,6 +114,7 @@ func GetInt(label int, key string) (int, error) {
 	return client.Get(ctx, key).Int()
 }
 
+/*
 func setProgressbar(label int, values []string) error {
 	client, ok := clients[label]
 	if !ok {
@@ -130,7 +131,7 @@ func setProgressbar(label int, values []string) error {
 	kv["optime"] = fmt.Sprintf("%s/%s", kv["time"], kv["est"])
 
 	return client.HSet(ctx, "processing", kv).Err()
-}
+}*/
 
 // SetTransaction set key value to trascation,
 func SetTransaction(label int, values ...interface{}) error {

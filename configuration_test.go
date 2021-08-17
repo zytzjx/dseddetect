@@ -12,7 +12,7 @@ func TestLoadConfigXML(t *testing.T) {
 }
 
 func TestLabel(t *testing.T) {
-	reg, _ := regexp.Compile("label(\\d+)")
+	reg, _ := regexp.Compile(`label(\d+)`)
 	s := reg.FindStringSubmatch("label5")
 	if len(s) == 2 {
 		d, _ := strconv.Atoi(s[1])

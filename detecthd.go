@@ -156,6 +156,7 @@ func (sm *SyncMap) RemoveOld(newkeylist []string) {
 		if !stringInSlice(kk, newkeylist) {
 			//sm.dddetect[kk].detectHDD.Label
 			//TODO: need remove data from database
+			ResetDB(sm.dddetect[kk].detectHDD.Label)
 			Set(sm.dddetect[kk].detectHDD.Label, "status", "disconnected", 0)
 			Publish(sm.dddetect[kk].detectHDD.Label, "status", "disconnected")
 			delete(sm.dddetect, kk)
@@ -257,7 +258,7 @@ var DetectData = NewSyncMap()
 // SASHDDinfo sas hd info
 var SASHDDinfo = NewSyncSASHDDMap()
 
-var detectIndexes []int
+//var detectIndexes []int
 
 // WriteHDDInfo2DB write detect information to labelDB
 func WriteHDDInfo2DB(detectHDD *DataDetect) {
@@ -281,7 +282,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 	if detectHDD.Label == 0 {
 		return
 	}
-	ResetDB(detectHDD.Label)
+	//ResetDB(detectHDD.Label)
 	Set(detectHDD.Label, "status", "connected", 0)
 	Publish(detectHDD.Label, "status", "connected")
 	Set(detectHDD.Label, "size", detectHDD.Size, 0)
@@ -298,7 +299,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 	// writer.WriteElementString("size", sSize);
 	SetTransaction(detectHDD.Label, "size", detectHDD.Size)
 
-	badsectors, _ := detectHDD.Otherinfo["badsectors"]
+	badsectors := detectHDD.Otherinfo["badsectors"]
 	SetTransaction(detectHDD.Label, "badsectors", badsectors)
 	Set(detectHDD.Label, "badsectors", badsectors, 0)
 	jsonString, err := json.Marshal(detectHDD.Otherinfo)
@@ -321,7 +322,7 @@ func MergeCalibration() {
 	DetectData.lock.Lock()
 	defer DetectData.lock.Unlock()
 
-	detectIndexes = []int{}
+	//detectIndexes = []int{}
 	for index, sasmap := range SASHDDinfo.SASHDDMapData {
 		if mm, ok := SASHDDinfo.ReadStatus[index]; ok {
 			if !mm {
@@ -351,7 +352,7 @@ func MergeCalibration() {
 					if len(v.detectHDD.Calibration) > 0 {
 						v.detectHDD.UILabel, ok = configxmldata.Conf.GetPortMap()[v.detectHDD.Calibration]
 						if ok {
-							reg, _ := regexp.Compile("label(\\d+)")
+							reg, _ := regexp.Compile(`label(\d+)`)
 							ss := reg.FindStringSubmatch(v.detectHDD.UILabel)
 							if len(ss) == 2 {
 								v.detectHDD.Label, _ = strconv.Atoi(ss[1])
@@ -372,7 +373,7 @@ func MergeCalibration() {
 }
 
 func main() {
-	fmt.Println("version: 20.12.14.0, auther:Jeffery Zhang")
+	fmt.Println("version: 21.08.14.0, auther:Jeffery Zhang")
 	fmt.Println("http://localhost:12000/print")
 	fmt.Println("http://localhost:12000/labels")
 	fmt.Println("http://localhost:12000/print/{[0-9]+}")
