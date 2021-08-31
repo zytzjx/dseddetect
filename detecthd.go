@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	Log "github.com/zytzjx/anthenacmc/loggersys"
 )
 
 // DataDetect Data Detect
@@ -373,6 +374,8 @@ func MergeCalibration() {
 }
 
 func main() {
+	Log.NewLogger("dseddetect")
+	Log.Log.Info("version:21.8.10.0; author:Jeffery zhang")
 	fmt.Println("version: 21.08.14.0, auther:Jeffery Zhang")
 	fmt.Println("http://localhost:12000/print")
 	fmt.Println("http://localhost:12000/labels")
@@ -401,7 +404,7 @@ func main() {
 	r.HandleFunc("/print/{id:[0-9]+}", LabelHandler).Methods("GET")
 
 	srv := &http.Server{
-		Addr: "0.0.0.0:12000",
+		Addr: "127.0.0.1:12000",
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
@@ -413,14 +416,9 @@ func main() {
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
 			log.Println(err)
+			Log.Log.Error(err)
 		}
 	}()
-
-	// StartTCPServer()
-
-	// fmt.Println(DetectData.dddetect)
-	//SASHDDinfo.RunCardInfo(1)
-	// fmt.Println(SASHDDinfo.SASHDDMapData)
 
 	c := make(chan os.Signal, 1)
 	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
@@ -440,5 +438,6 @@ func main() {
 	// <-ctx.Done() if your application should wait for other services
 	// to finalize based on context cancellation.
 	log.Println("shutting down")
+	Log.Log.Info("shutting down")
 	os.Exit(0)
 }

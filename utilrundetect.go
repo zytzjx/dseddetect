@@ -8,9 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"log"
 	"os/exec"
 	"regexp"
+
+	Log "github.com/zytzjx/anthenacmc/loggersys"
 )
 
 //var SASHDDMapData map[int]([]map[string]string)
@@ -33,6 +34,7 @@ var ingoreKeys = map[string]bool{
 
 // ReadDataFromSmartCtl Read Data From SmartCtl
 func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
+	Log.Log.Info("ReadDataFromSmartCtl++")
 	defer wg.Done()
 	//sDevName string, hdinfo *DataDetect
 	sDevName := sdd.detectHDD.LinuxName
@@ -54,10 +56,12 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 	cmd := exec.Command("smartctl", sDevName, "-i", "-H")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		Log.Log.Error(err)
 	}
 	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		Log.Log.Error(err)
 	}
 
 	timer := time.AfterFunc(300*time.Second, func() {
@@ -119,6 +123,7 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 	<-done
 	if cmd.Wait() != nil {
 		fmt.Println("run smartctrl failed")
+		Log.Log.Error("run smartctrl failed")
 	}
 
 	timer.Stop()
@@ -132,10 +137,12 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 		cmd = exec.Command("smartctl", sDevName, "-A")
 		stdout, err = cmd.StdoutPipe()
 		if err != nil {
-			log.Fatal(err)
+			//log.Fatal(err)
+			Log.Log.Error(err)
 		}
 		if err := cmd.Start(); err != nil {
-			log.Fatal(err)
+			//log.Fatal(err)
+			Log.Log.Error(err)
 		}
 
 		timer := time.AfterFunc(300*time.Second, func() {
@@ -183,6 +190,7 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 		<-done
 		if cmd.Wait() != nil {
 			fmt.Println("run smartctrl failed")
+			Log.Log.Error("run smartctrl failed")
 		}
 
 		timer.Stop()
@@ -207,15 +215,18 @@ func waitTimeout(wg *sync.WaitGroup, timeout time.Duration) bool {
 
 // RunListDisk run list disks
 func RunListDisk() {
+	Log.Log.Info("RunListDisk++")
 	lsscsipath := "lsscsi"
 	cmd := exec.Command(lsscsipath, "-s", "-g")
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		Log.Log.Error(err)
 	}
 	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		Log.Log.Error(err)
 	}
 
 	timer := time.AfterFunc(10*time.Second, func() {
@@ -231,6 +242,7 @@ func RunListDisk() {
 		for scanner.Scan() {
 			ss := scanner.Text()
 			fmt.Println(ss)
+			Log.Log.Info(ss)
 			hddinfo = append(hddinfo, ss)
 			if !DetectData.MatchKey(ss) {
 				hddchanged = true
@@ -338,6 +350,7 @@ var ConDefine = map[string]string{
 }
 
 func parseLsiData(lines []string) []map[string]string {
+	Log.Log.Info("parseLsiData++")
 	var ret []map[string]string
 	bFindDisk := false
 	var item map[string]string
@@ -390,15 +403,18 @@ func (sshm *SyncSASHDDMap) ClearReadFlag() {
 
 // RunCardInfo   get card info
 func (sshm *SyncSASHDDMap) RunCardInfo(index int, wg *sync.WaitGroup) {
+	Log.Log.Info("RunCardInfo++")
 	defer wg.Done()
 
 	cmd := exec.Command("./sas2ircu", strconv.Itoa(index), "DISPLAY")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		Log.Log.Error(err)
 	}
 	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		Log.Log.Error(err)
 	}
 
 	timer := time.AfterFunc(600*time.Second, func() {

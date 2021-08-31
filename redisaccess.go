@@ -30,7 +30,7 @@ func CreateRedisPool(count int) (map[int]*redis.Client, error) {
 		})
 
 		clients[i] = c
-		c.Set(ctx, "status", "disconnected", 0)
+		//c.Set(ctx, "status", "disconnected", 0)
 	}
 	return clients, nil
 }

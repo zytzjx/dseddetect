@@ -2,6 +2,8 @@
 github.com/cespare/xxhash/v2
 # github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
 github.com/dgryski/go-rendezvous
+# github.com/fastly/go-utils v0.0.0-20180712184237-d95a45783239
+## explicit
 # github.com/go-redis/redis/v8 v8.3.3
 ## explicit
 github.com/go-redis/redis/v8
@@ -14,8 +16,28 @@ github.com/go-redis/redis/v8/internal/util
 # github.com/gorilla/mux v1.8.0
 ## explicit
 github.com/gorilla/mux
-# github.com/widuu/gojson v0.0.0-20170212122013-7da9d2cd949b
+# github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869
 ## explicit
+# github.com/jonboulle/clockwork v0.2.2
+## explicit
+# github.com/konsorten/go-windows-terminal-sequences v1.0.3
+github.com/konsorten/go-windows-terminal-sequences
+# github.com/lestrrat-go/file-rotatelogs v2.3.0+incompatible
+github.com/lestrrat-go/file-rotatelogs
+github.com/lestrrat-go/file-rotatelogs/internal/option
+# github.com/lestrrat-go/strftime v1.0.1
+github.com/lestrrat-go/strftime
+# github.com/pkg/errors v0.9.1
+github.com/pkg/errors
+# github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
+github.com/rifflock/lfshook
+# github.com/sirupsen/logrus v1.6.0
+github.com/sirupsen/logrus
+# github.com/tebeka/strftime v0.1.5
+## explicit
+# github.com/zytzjx/anthenacmc v0.0.0-20210810233456-18ee95c6e4bc
+## explicit
+github.com/zytzjx/anthenacmc/loggersys
 # go.opentelemetry.io/otel v0.13.0
 go.opentelemetry.io/otel
 go.opentelemetry.io/otel/api/global
@@ -29,3 +51,6 @@ go.opentelemetry.io/otel/internal/baggage
 go.opentelemetry.io/otel/internal/trace/noop
 go.opentelemetry.io/otel/label
 go.opentelemetry.io/otel/unit
+# golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
