@@ -84,7 +84,7 @@ func (sdd *SyncDataDetect) String() string {
 
 	jsonString, err := json.Marshal(sdd.detectHDD)
 	if err != nil {
-		return ""
+		return "{}"
 	}
 	return string(jsonString)
 }
@@ -334,7 +334,7 @@ func MergeCalibration() {
 		for _, card := range sasmap {
 			Serial, oks := card["Serial"]
 			GUID, okg := card["GUID"]
-			for _, v := range DetectData.dddetect {
+			for k, v := range DetectData.dddetect {
 				if len(v.detectHDD.Serialno) == 0 {
 					continue
 				}
@@ -365,6 +365,7 @@ func MergeCalibration() {
 						v.detectHDD.Otherinfo[kkk] = vvv
 					}
 				}
+				DetectData.dddetect[k] = v
 				WriteHDDInfo2DB(v.detectHDD)
 			}
 
@@ -375,8 +376,9 @@ func MergeCalibration() {
 
 func main() {
 	Log.NewLogger("dseddetect")
-	Log.Log.Info("version:21.8.10.0; author:Jeffery zhang")
-	fmt.Println("version: 21.08.14.0, auther:Jeffery Zhang")
+	verinfo := "version:21.9.1.0; author:Jeffery zhang"
+	Log.Log.Info(verinfo)
+	fmt.Println(verinfo)
 	fmt.Println("http://localhost:12000/print")
 	fmt.Println("http://localhost:12000/labels")
 	fmt.Println("http://localhost:12000/print/{[0-9]+}")

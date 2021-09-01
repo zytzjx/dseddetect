@@ -123,7 +123,7 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 	<-done
 	if cmd.Wait() != nil {
 		fmt.Println("run smartctrl failed")
-		Log.Log.Error("run smartctrl failed")
+		Log.Log.Error(fmt.Sprintf("run smartctrl failed (%v) -i -H", sDevName))
 	}
 
 	timer.Stop()
@@ -190,7 +190,7 @@ func (sdd *SyncDataDetect) ReadDataFromSmartCtl(wg *sync.WaitGroup) {
 		<-done
 		if cmd.Wait() != nil {
 			fmt.Println("run smartctrl failed")
-			Log.Log.Error("run smartctrl failed")
+			Log.Log.Error(fmt.Sprintf("run smartctrl failed (%v) -A", sDevName))
 		}
 
 		timer.Stop()
@@ -286,6 +286,7 @@ func RunListDisk() {
 	err = cmd.Wait()
 	if err != nil {
 		fmt.Println("run lsscsi error: " + err.Error())
+		Log.Log.Error(err)
 	}
 
 	timer.Stop()
@@ -295,6 +296,7 @@ func RunListDisk() {
 
 	if hddchanged {
 		fmt.Print("changed!")
+		Log.Log.Info("Changed!")
 		cclist, err := configxmldata.Conf.GetCardListIndex()
 		if err == nil {
 			for _, i := range cclist {
@@ -305,9 +307,11 @@ func RunListDisk() {
 		for i := 0; i < 30; i++ {
 			if waitTimeout(&wg, 10*time.Second) {
 				fmt.Println("Timed out waiting for wait group")
+				Log.Log.Info("Timed out waiting for wait group")
 				MergeCalibration()
 			} else {
 				fmt.Println("Wait group finished")
+				Log.Log.Info("Wait group finished")
 				MergeCalibration()
 				break
 			}
@@ -350,7 +354,7 @@ var ConDefine = map[string]string{
 }
 
 func parseLsiData(lines []string) []map[string]string {
-	Log.Log.Info("parseLsiData++")
+	//Log.Log.Info("parseLsiData++")
 	var ret []map[string]string
 	bFindDisk := false
 	var item map[string]string
@@ -428,6 +432,7 @@ func (sshm *SyncSASHDDMap) RunCardInfo(index int, wg *sync.WaitGroup) {
 		for scanner.Scan() {
 			ss := scanner.Text()
 			fmt.Println(ss)
+			Log.Log.Info(ss)
 			dynaArr = append(dynaArr, ss)
 		}
 		done <- true
@@ -435,6 +440,7 @@ func (sshm *SyncSASHDDMap) RunCardInfo(index int, wg *sync.WaitGroup) {
 	<-done
 	if cmd.Wait() != nil {
 		fmt.Println("run sas2ircu failed")
+		Log.Log.Errorf("run sas2ircu failed at index (%d)", index)
 	}
 	timer.Stop()
 
