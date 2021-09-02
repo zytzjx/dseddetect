@@ -1,0 +1,336 @@
+sudo smartctl /dev/sg0 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a066300f0
+Serial number:        S1N2NYAH600208
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:14:42 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg1 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a0662f980
+Serial number:        S1N2NYAH600089
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:14:53 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg3 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a0662fab0
+Serial number:        S1N2NYAH600108
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:14:58 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg4 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZ6ER800HAGL/003
+Revision:             DM0L
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  8192 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538475a05090
+Serial number:        S13NNWAGA00198
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:04 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg5 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a06630100
+Serial number:        S1N2NYAH600209
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:10 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg6 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a0662fda0
+Serial number:        S1N2NYAH600155
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:14 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg7 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a0662fe50
+Serial number:        S1N2NYAH600166
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:19 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg8 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a06630030
+Serial number:        S1N2NYAH600196
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:24 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg9 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a0662fe30
+Serial number:        S1N2NYAH600164
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:29 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg10 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a0662fe00
+Serial number:        S1N2NYAH600161
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:35 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg11 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZ6ER800HAGL/003
+Revision:             DM0L
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  8192 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538475b21890
+Serial number:        S13NNWAGB00146
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:40 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%
+sudo smartctl /dev/sg12 -i -H
+smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.11.0-27-generic] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SAMSUNG
+Product:              MZIES800HMHP/003
+Revision:             EM14
+Compliance:           SPC-4
+User Capacity:        800,166,076,416 bytes [800 GB]
+Logical block size:   512 bytes
+Physical block size:  4096 bytes
+LU is resource provisioned, LBPRZ=1
+Rotation Rate:        Solid State Device
+Form Factor:          2.5 inches
+Logical Unit id:      0x5002538a0662fce0
+Serial number:        S1N2NYAH600143
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Sep  1 16:15:44 2021 PDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART Health Status: OK
+
+Percentage used endurance indicator: 0%

@@ -245,9 +245,11 @@ func RunListDisk() {
 			Log.Log.Info(ss)
 			hddinfo = append(hddinfo, ss)
 			if !DetectData.MatchKey(ss) {
-				hddchanged = true
+				//hddchanged = true
+				fmt.Println("Print log")
 			}
 			if !DetectData.ContainsKey(ss) {
+				hddchanged = true
 				//\s Matches any white-space character.
 				r := regexp.MustCompile(`^([\s\S]{13})(disk[\s\S]{4})([\s\S]{9})([\s\S]{17})([\s\S]{6})([\s\S]{11})([\s\S]{11})([\s\S]+)$`)
 				diskinfos := r.FindStringSubmatch(ss)
@@ -290,7 +292,9 @@ func RunListDisk() {
 	}
 
 	timer.Stop()
-	DetectData.RemoveOld(hddinfo)
+	if DetectData.RemoveOld(hddinfo) > 0 {
+		hddchanged = true
+	}
 
 	time.Sleep(4 * time.Second)
 

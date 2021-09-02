@@ -150,9 +150,10 @@ func (sm *SyncMap) AddValue(key string, dd *SyncDataDetect) {
 }
 
 // RemoveOld remove
-func (sm *SyncMap) RemoveOld(newkeylist []string) {
+func (sm *SyncMap) RemoveOld(newkeylist []string) int {
 	sm.lock.Lock()
 	defer sm.lock.Unlock()
+	icount := 0 //remove count
 	for kk := range sm.dddetect {
 		if !stringInSlice(kk, newkeylist) {
 			//sm.dddetect[kk].detectHDD.Label
@@ -161,9 +162,10 @@ func (sm *SyncMap) RemoveOld(newkeylist []string) {
 			Set(sm.dddetect[kk].detectHDD.Label, "status", "disconnected", 0)
 			Publish(sm.dddetect[kk].detectHDD.Label, "status", "disconnected")
 			delete(sm.dddetect, kk)
+			icount++
 		}
 	}
-
+	return icount
 }
 
 // Get get value
@@ -312,6 +314,8 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 		healthy = "Failed.FD"
 	}
 	Set(detectHDD.Label, "HD-health", healthy, 0)
+	Set(detectHDD.Label, "calibration", detectHDD.Calibration, 0)
+	Set(detectHDD.Label, "uilabel", detectHDD.UILabel, 0)
 	SetTransaction(detectHDD.Label, "Healthy", healthy)
 
 }
@@ -323,6 +327,7 @@ func MergeCalibration() {
 	DetectData.lock.Lock()
 	defer DetectData.lock.Unlock()
 
+	//Log.Log.Info(DetectData.String())
 	//detectIndexes = []int{}
 	for index, sasmap := range SASHDDinfo.SASHDDMapData {
 		if mm, ok := SASHDDinfo.ReadStatus[index]; ok {
@@ -333,7 +338,13 @@ func MergeCalibration() {
 		SASHDDinfo.ReadStatus[index] = false
 		for _, card := range sasmap {
 			Serial, oks := card["Serial"]
+			if Serial == "" {
+				oks = false
+			}
 			GUID, okg := card["GUID"]
+			if GUID == "" {
+				okg = false
+			}
 			for k, v := range DetectData.dddetect {
 				if len(v.detectHDD.Serialno) == 0 {
 					continue
@@ -345,8 +356,8 @@ func MergeCalibration() {
 				if sLuID, ok = v.detectHDD.Otherinfo["LogicalUnitID"]; !ok {
 					sLuID = ""
 				}
-				if (oks && (strings.HasPrefix(sserno, Serial) || strings.HasPrefix(Serial, sserno))) ||
-					(okg && (strings.EqualFold(GUID, v.detectHDD.LuwwndevID) || strings.EqualFold(GUID, sLuID))) {
+				if (oks && ((sserno != "" && Serial != "") && strings.HasPrefix(sserno, Serial) || strings.HasPrefix(Serial, sserno))) ||
+					(okg && ((GUID != "" && v.detectHDD.LuwwndevID != "" && sLuID != "") && strings.EqualFold(GUID, v.detectHDD.LuwwndevID) || strings.EqualFold(GUID, sLuID))) {
 					if slot, ok := card["Slot"]; ok {
 						v.detectHDD.Calibration = fmt.Sprintf("%d_%s", index, slot)
 					}
@@ -376,7 +387,7 @@ func MergeCalibration() {
 
 func main() {
 	Log.NewLogger("dseddetect")
-	verinfo := "version:21.9.1.0; author:Jeffery zhang"
+	verinfo := "version:21.9.1.1; author:Jeffery zhang"
 	Log.Log.Info(verinfo)
 	fmt.Println(verinfo)
 	fmt.Println("http://localhost:12000/print")

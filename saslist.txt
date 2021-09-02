@@ -1,0 +1,206 @@
+LSI Corporation SAS2 IR Configuration Utility.
+Version 20.00.00.00 (2014.09.18) 
+Copyright (c) 2008-2014 LSI Corporation. All rights reserved. 
+
+Read configuration has been initiated for controller 1
+------------------------------------------------------------------------
+Controller information
+------------------------------------------------------------------------
+  Controller type                         : SAS2116_1
+  BIOS version                            : 0.00.00.00
+  Firmware version                        : 20.00.07.00
+  Channel description                     : 1 Serial Attached SCSI
+  Initiator ID                            : 0
+  Maximum physical devices                : 1023
+  Concurrent commands supported           : 32455
+  Slot                                    : Unknown
+  Segment                                 : 0
+  Bus                                     : 5
+  Device                                  : 0
+  Function                                : 0
+  RAID Support                            : No
+------------------------------------------------------------------------
+IR Volume information
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+Physical device information
+------------------------------------------------------------------------
+Initiator at ID #0
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 0
+  SAS Address                             : 5002538-a-0662-fce2
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a0662fce0
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 1
+  SAS Address                             : 5002538-4-75b2-1892
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZ6ER800HAGL/003
+  Firmware Revision                       : DM0L
+  Serial No                               : 
+  GUID                                    : 5002538475b21890
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 4
+  SAS Address                             : 5002538-a-0663-00f2
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a066300f0
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 5
+  SAS Address                             : 5002538-a-0662-fab2
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a0662fab0
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 6
+  SAS Address                             : 5002538-a-0662-f982
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a0662f980
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 8
+  SAS Address                             : 5002538-a-0662-fda2
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a0662fda0
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 10
+  SAS Address                             : 5002538-a-0663-0102
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a06630100
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 11
+  SAS Address                             : 5002538-4-75a0-5092
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZ6ER800HAGL/003
+  Firmware Revision                       : DM0L
+  Serial No                               : 
+  GUID                                    : 5002538475a05090
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 12
+  SAS Address                             : 5002538-a-0662-fe02
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a0662fe00
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 13
+  SAS Address                             : 5002538-a-0662-fe32
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a0662fe30
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 14
+  SAS Address                             : 5002538-a-0663-0032
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a06630030
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+
+Device is a Hard disk
+  Enclosure #                             : 1
+  Slot #                                  : 15
+  SAS Address                             : 5002538-a-0662-fe52
+  State                                   : Ready (RDY)
+  Size (in MB)/(in sectors)               : 763097/1562824367
+  Manufacturer                            : SAMSUNG 
+  Model Number                            : MZIES800HMHP/003
+  Firmware Revision                       : EM14
+  Serial No                               : 
+  GUID                                    : 5002538a0662fe50
+  Protocol                                : SAS
+  Drive Type                              : SAS_SSD
+------------------------------------------------------------------------
+Enclosure information
+------------------------------------------------------------------------
+  Enclosure#                              : 1
+  Logical ID                              : 5000d310:00461809
+  Numslots                                : 16
+  StartSlot                               : 0
+------------------------------------------------------------------------
+SAS2IRCU: Command DISPLAY Completed Successfully.
+SAS2IRCU: Utility Completed Successfully.
