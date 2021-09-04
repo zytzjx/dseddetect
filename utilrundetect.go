@@ -253,6 +253,13 @@ func RunListDisk() {
 				//\s Matches any white-space character.
 				r := regexp.MustCompile(`^([\s\S]{13})(disk[\s\S]{4})([\s\S]{9})([\s\S]{17})([\s\S]{6})([\s\S]{11})([\s\S]{11})([\s\S]+)$`)
 				diskinfos := r.FindStringSubmatch(ss)
+				if len(diskinfos) > 4 {
+					//[11:0:0:0]   disk    Generic- SD/MMC CRW       1.00  /dev/sdd   /dev/sg3        -
+					//USB MMC card, we will ignore
+					if strings.Trim(diskinfos[4], " ") == "SD/MMC CRW" || strings.Trim(diskinfos[4], " ") == "Generic-" {
+						continue
+					}
+				}
 				if len(diskinfos) == 9 {
 					var dddect = NewSyncDataDetect()
 					dddect.detectHDD.Locpath = strings.Trim(diskinfos[1], " ")

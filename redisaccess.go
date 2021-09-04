@@ -186,6 +186,7 @@ func ResetDB(label int) error {
 	if !ok {
 		return errors.New("not found label")
 	}
-	client.FlushDB(ctx)
+	//client.FlushDB(ctx)
+	client.Del(ctx, "linuxname", "sglibName", "size", "serialnumber")
 	return client.Set(ctx, "status", "disconnected", 0).Err()
 }

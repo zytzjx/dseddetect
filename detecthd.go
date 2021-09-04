@@ -282,6 +282,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 	// 	//public String firware version replace by sVersion;
 	// 	Otherinfo map[string]string `json:"otherinfo"`
 	// }
+	Log.Log.Info("WriteHDDInfo2DB++")
 	if detectHDD.Label == 0 {
 		return
 	}
@@ -322,6 +323,7 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 
 // MergeCalibration merge
 func MergeCalibration() {
+	Log.Log.Info("MergeCalibration ++")
 	SASHDDinfo.lock.Lock()
 	defer SASHDDinfo.lock.Unlock()
 	DetectData.lock.Lock()
@@ -387,7 +389,7 @@ func MergeCalibration() {
 
 func main() {
 	Log.NewLogger("dseddetect")
-	verinfo := "version:21.9.1.1; author:Jeffery zhang"
+	verinfo := "version:21.9.3.0; author:Jeffery zhang"
 	Log.Log.Info(verinfo)
 	fmt.Println(verinfo)
 	fmt.Println("http://localhost:12000/print")
