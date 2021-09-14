@@ -225,6 +225,19 @@ func (sm *SyncMap) ItemToString(id string) string {
 	return string(jsonString)
 }
 
+// GetLabels get label connect
+func (sm *SyncMap) GetLabels() []int {
+	sm.lock.Lock()
+	defer sm.lock.Unlock()
+	labels := make([]int, 0)
+	for _, v := range sm.dddetect {
+		if v.detectHDD.Label > 0 {
+			labels = append(labels, v.detectHDD.Label)
+		}
+	}
+	return labels
+}
+
 // IndexString get label connect
 func (sm *SyncMap) IndexString() string {
 	sm.lock.Lock()
@@ -321,6 +334,26 @@ func WriteHDDInfo2DB(detectHDD *DataDetect) {
 
 }
 
+func contains(s []int, str int) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
+}
+
+func SetDisconnected() {
+	labels := DetectData.GetLabels()
+	for i := 1; i <= 48; i++ {
+		if contains(labels, i) {
+			continue
+		}
+		Set(i, "status", "disconnected", 0)
+	}
+}
+
 // MergeCalibration merge
 func MergeCalibration() {
 	Log.Log.Info("MergeCalibration ++")
@@ -389,7 +422,7 @@ func MergeCalibration() {
 
 func main() {
 	Log.NewLogger("dseddetect")
-	verinfo := "version:21.9.3.0; author:Jeffery zhang"
+	verinfo := "version:21.9.13.0; author:Jeffery zhang"
 	Log.Log.Info(verinfo)
 	fmt.Println(verinfo)
 	fmt.Println("http://localhost:12000/print")
@@ -406,6 +439,8 @@ func main() {
 
 			MergeCalibration()
 			//fmt.Println("interval:", *nDelay)
+			SetDisconnected()
+
 			time.Sleep(time.Duration(*nDelay) * time.Second)
 		}
 	}()
