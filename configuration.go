@@ -75,7 +75,13 @@ func LoadConfigXML() {
 		return
 	}
 
-	configxmlpath := path.Join(dir, "appconf.xml")
+	appconfName := "appconf.xml"
+	sType := GetProductType()
+	if sType != "" && sType != "DSED" {
+		appconfName = fmt.Sprintf("appconf_%s.xml", sType)
+	}
+
+	configxmlpath := path.Join(dir, appconfName)
 
 	xmlFile, err := os.Open(configxmlpath)
 	if err != nil {

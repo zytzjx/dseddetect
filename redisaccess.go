@@ -18,6 +18,13 @@ var rdb = redis.NewClient(&redis.Options{
 })
 var clients map[int]*redis.Client
 
+// GetProductType return lite or DSED
+func GetProductType() string {
+	stype := "DSED"
+	stype = rdb.Get(ctx, "producttype").String()
+	return stype
+}
+
 // CreateRedisPool create redis client
 func CreateRedisPool(count int) (map[int]*redis.Client, error) {
 	clients = make(map[int]*redis.Client)

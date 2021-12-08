@@ -422,7 +422,7 @@ func MergeCalibration() {
 
 func main() {
 	Log.NewLogger("dseddetect")
-	verinfo := "version:21.9.13.0; author:Jeffery zhang"
+	verinfo := "version:21.12.7.0; author:Jeffery zhang"
 	Log.Log.Info(verinfo)
 	fmt.Println(verinfo)
 	fmt.Println("http://localhost:12000/print")
