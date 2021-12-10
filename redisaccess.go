@@ -21,7 +21,7 @@ var clients map[int]*redis.Client
 // GetProductType return lite or DSED
 func GetProductType() string {
 	stype := "DSED"
-	stype = rdb.Get(ctx, "producttype").String()
+	stype, _ = rdb.Get(ctx, "producttype").Result()
 	return stype
 }
 
